@@ -6,8 +6,9 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["contextMenus"],
+  "permissions": ["contextMenus", "storage", "tabs", "activeTab", "scripting"],
   "action": {
+    "default_title": "🗑️ Restore closed tabs",
     "default_icon": {
       "16": "/images/clean16.png",
       "32": "/images/clean32.png",
