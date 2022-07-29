@@ -20,15 +20,35 @@ chrome.action.onClicked.addListener(() => {
       });
     });
   });
-  closedTabs = [];
+  resetStorage();
   updateStorage();
 });
 
-function updateStorage() {
+function resetStorage() {
+  closedTabs = [];
   chrome.storage.local.clear(["tabs"]);
+}
+
+function updateStorage() {
   var saveTabs = JSON.stringify(closedTabs);
   chrome.storage.local.set({ tabs: saveTabs });
+  updateBadge();
+}
+
+function updateBadge() {
   chrome.action.setBadgeText({ text: `${closedTabs.length}` });
 }
 
-updateStorage();
+function loadStorage() {
+  try {
+    chrome.storage.local.get(["tabs"], (data) => {
+      closedTabs = JSON.parse(data.tabs);
+      updateBadge();
+    });
+  } catch (error) {
+    resetStorage();
+    updateStorage();
+  }
+}
+
+loadStorage();
